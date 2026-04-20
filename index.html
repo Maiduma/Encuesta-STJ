@@ -1,0 +1,1182 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Encuesta dinámica</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+.hidden {
+    display: none;
+}
+.seccion {
+    display: none;
+    margin-top: 20px;
+}
+</style>
+
+
+
+
+<script>
+function validarFormulario() {
+    let nombre = document.getElementById("nombre").value.trim();
+    let apellido = document.getElementById("apellido").value.trim();
+    let correo = document.getElementById("correoUsuario").value.trim();
+    let error = document.getElementById("error");
+
+    // Limpiar errores previos
+    error.innerHTML = "";
+
+    // Validar campos vacíos
+    if (nombre === "" || apellido === "" || correo === "") {
+        error.innerHTML = "Todos los campos son obligatorios.";
+        return;
+    }
+
+    // Validar solo letras (opcional pero recomendable)
+    let regexNombre = /^[a-zA-ZÁÉÍÓÚáéíóúñÑ\s]+$/;
+    if (!regexNombre.test(nombre) || !regexNombre.test(apellido)) {
+        error.innerHTML = "El nombre y apellido solo deben contener letras.";
+        return;
+    }
+
+    // Validar correo institucional
+    let regexCorreo = /^[a-zA-Z0-9._%+-]+@stjsonora\.gob\.mx$/;
+    if (!regexCorreo.test(correo)) {
+        error.innerHTML = "El correo debe ser institucional (@stjsonora.gob.mx).";
+        return;
+    }
+
+    // Si todo está correcto, continuar
+    mostrarTerminos();
+}
+</script>
+
+
+
+
+
+
+
+
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+
+<h1 class="text-center mb-4">Encuesta</h1>
+
+<!-- ================= REGISTRO ================= -->
+<div id="registro" class="card p-4">
+    <h4>Registro de Usuario</h4>
+
+    <input id="nombre" type="text" class="form-control mb-2" placeholder="Nombre completo">
+    <input id="apellido" type="text" class="form-control mb-2" placeholder="Apellido completo">
+    <!--input id="correoJuzgado" type="email" class="form-control mb-2" placeholder="Correo institucional del juzgado"-->
+    <input id="correoUsuario" type="email" class="form-control mb-2" placeholder="Correo institucional del usuario">
+
+    <button class="btn btn-success mt-3" onclick="mostrarTerminos()">
+        Continuar
+    </button>
+</div>
+
+<!-- ================= TERMINOS ================= -->
+<div id="terminos" class="card p-4 hidden">
+    <h4>Términos y Condiciones</h4>
+
+    <p>
+        Se le informa que se realizará una encuesta. Sus respuestas podrán ser utilizadas
+        con fines administrativos y de análisis.
+    </p>
+
+    <label>Seleccione una categoría:</label>
+    <select class="form-select mb-3" id="selector">
+        <option value="">-- Seleccione --</option>
+        <option value="judicial">Poder Judicial</option>
+        <option value="garante">Autoridad Garante</option>
+        <option value="laboral">Laborales</option>
+    </select>
+
+    <button class="btn btn-success" onclick="iniciarEncuesta()">
+        Acepto los términos
+    </button>
+</div>
+
+<!-- ================= ENCUESTA ================= -->
+<div id="encuesta" class="card p-4 hidden">
+
+    <h1 id="tituloEncuesta"></h1>
+
+    <!-- ================= PODER JUDICIAL ================= -->
+    <div id="judicial" class="seccion">
+        
+        <h1>Obligaciones de transparencia comunes, (LEY GENERAL)</h1>
+        <h3> Conformidad con el penúltimo y último párrafo del artículo 65 de la Ley General de Transparencia y Acceso a la Información Pública, 
+        así como del artículo 54 de la Ley de Transparencia y Acceso a la Información Pública del Estado de Sonora, es necesario que las diversas áreas 
+        obligadas del Poder Judicial identifiquen y determinen las fracciones de las obligaciones de transparencia que les resultan aplicables, 
+        para su correspondiente validación por parte de esta Autoridad Garante, Visitaduría Judicial y Contraloría del Órgano de Administración del Poder Judicial del 
+        Estado de Sonora.</h3>
+        <h3>Al respecto, se precisa que las fracciones que se señalan han sido definidas con base en un análisis técnico-normativo y corresponden 
+        a aquellas que históricamente han sido aplicadas por el Poder Judicial, mismas que han permitido dar cumplimiento efectivo a las obligaciones de transparencia.</h3>
+        <h3> En ese sentido, y con el objeto de asegurar la continuidad en los criterios institucionales, la congruencia en la información pública y el adecuado cumplimiento
+        normativo, resulta procedente que dichas fracciones consistentes en las fracciones I, II, III, IV, V, VI, VII, VIII, IX, X, XI, XII, XIII, XV, XVI, XVII, XVIII, XIX, XXI,
+        XXII, XXIII, XXV, XXVI, XXVII, XXVIII, XXIX, XXX, XXXI, XXXII, XXXIII, XXXIV, XXXVI, XXXVII, XXXVIII, XXXIX, XLI, XLII, XLIII, XLV y XLVI del artículo 65 de 
+        la Ley General de Transparencia y Acceso a la Información Pública sean adoptadas como base para su determinación actual. </h3>
+        
+
+<!-- Seccion de preguntas, se pre marcara la opcion que solicite el usuario con anticipacion -->
+            
+             
+<h2>Artículo 65: Selecciona las secciones aplicables</h2>
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion1" checked>
+    <label class="form-check-label">I. El marco normativo aplicable al sujeto obligado, en el que deberá incluirse leyes, códigos, 
+        reglamentos, decretos de creación, manuales administrativos, reglas de operación, criterios, políticas, entre otros;</label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion2"  checked>
+    <label class="form-check-label">II. Su estructura orgánica completa, en un formato que permita vincular cada parte de la estructura, las atribuciones y 
+    responsabilidades que le corresponden a cada persona servidora pública y/o persona 
+    prestadora de servicios profesionales miembro de los sujetos obligados, de conformidad con las disposiciones aplicables;</label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3"  checked>
+    <label class="form-check-label">III. Las facultades de cada área;</label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3"  checked>
+    <label class="form-check-label">IV. Las metas y objetivos de las áreas de conformidad con sus programas operativos;</label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3" checked>
+    <label class="form-check-label">V. Los indicadores relacionados con temas de interés público o trascendencia social que, 
+        conforme a sus funciones, deban establecer, así como los que permitan rendir cuenta de sus objetivos y resultados;</label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3"  checked>
+    <label class="form-check-label">VI. El directorio de todas las personas servidoras públicas, a partir del nivel de jefe de departamento o su equivalente, 
+        o de menor nivel, cuando se brinde atención al público; manejen o apliquen recursos públicos; realicen actos de autoridad o presten servicios profesionales 
+        bajo el régimen de confianza u honorarios y personal de base. El directorio deberá incluir, al menos el nombre, cargo o nombramiento asignado, nivel del puesto en la 
+        estructura orgánica, fecha de alta en el cargo, número telefónico, domicilio para recibir correspondencia y dirección de correo electrónico oficiales;</label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3"  checked>
+    <label class="form-check-label">VII. La remuneración bruta y neta de todas las personas servidoras públicas de base o de confianza, de todas las percepciones, 
+        incluyendo sueldos, prestaciones, gratificaciones, primas, comisiones, dietas, bonos, estímulos, ingresos y sistemas de compensación, señalando la periodicidad 
+        de dicha remuneración;</label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3"  checked>
+    <label class="form-check-label">VIII. Los gastos de representación y viáticos, así como el objeto e informe de comisión correspondiente;</label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3"  checked>
+    <label class="form-check-label">IX. El número total de las plazas y del personal de base y confianza, especificando el total de las vacantes, por nivel de puesto, 
+        para cada unidad administrativa;</label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3"  checked>
+    <label class="form-check-label">X. Las contrataciones de servicios profesionales por honorarios, señalando los nombres de las personas prestadoras de servicios, 
+        los servicios contratados, el monto de los honorarios y el periodo de contratación;</label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3"  checked>
+    <label class="form-check-label">XI. La versión pública de las declaraciones patrimoniales de las personas servidoras públicas en términos de las disposiciones jurídicas aplicables,
+         en los sistemas habilitados para ello; </label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3"  checked>
+    <label class="form-check-label">XII. El domicilio de la Unidad de Transparencia, además de la dirección electrónica donde podrán recibirse las solicitudes 
+        para obtener la información; </label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3"  checked>
+    <label class="form-check-label">XIII. Las convocatorias a concursos para ocupar cargos públicos y los resultados de los mismos, en los sistemas habilitados para ello, 
+        de conformidad con las disposiciones jurídicas aplicables; </label>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- seccion donde viene por incisos -->
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3">
+    <label class="form-check-label">XIV. Los programas, subsidios, estímulos y apoyos, en el que se deberá informar respecto de los programas de transferencia, de servicios,
+         de infraestructura social y de subsidio, en los que se deberá contener lo siguiente:</label>   
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1" value="XIV" checked>
+    <label class="form-check-label"> 
+        a) Área; 
+    </label>
+</div>
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1" value="XIV" checked>
+    <label class="form-check-label">
+        b) Denominación del programa;
+    </label>
+</div>
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1" value="XIV" checked>
+    <label class="form-check-label">
+        c) Periodo de vigencia;
+    </label>
+</div>
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1" value="XIV" checked>
+    <label class="form-check-label">
+        d) Diseño, objetivos y alcances;
+    </label>
+</div>
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1" value="XIV" checked>
+    <label class="form-check-label">
+        f) Población beneficiada estimada;
+    </label>
+</div>
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1" value="XIV"  checked>
+    <label class="form-check-label">
+        g) Monto aprobado, modificado y ejercido, así como los calendarios de su programación presupuestal;
+         </label>
+</div>
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1" value="XIV"  checked>
+    <label class="form-check-label">
+        h) Requisitos y procedimientos de acceso;
+    </label>
+</div>
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1" value="XIV"      checked>
+    <label class="form-check-label">
+        ) Procedimiento de queja o inconformidad ciudadana;
+    </label>
+</div>
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1" value="XIV"    checked>
+    <label class="form-check-label">
+        j) Mecanismos de exigibilidad;
+    </label>
+</div>
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1" value="XIV"      checked>
+    <label class="form-check-label">
+        k) Mecanismos de evaluación, informes de evaluación y seguimiento de recomendaciones;
+    </label>
+</div>
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1" value="XIV"      checked>
+    <label class="form-check-label">
+        l) Indicadores con nombre, definición, método de cálculo, unidad de medida, dimensión, frecuencia de medición, 
+        nombre de las bases de datos utilizadas para su cálculo;
+    </label>
+</div>
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1" value="XIV"     checked>
+    <label class="form-check-label">
+        m) Formas de participación social;
+    </label>
+</div>
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1" value="XIV"      checked>
+    <label class="form-check-label">
+        n) Articulación con otros programas sociales;
+    </label>
+</div>
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1" value="XIV" checked>
+    <label class="form-check-label">
+        o) Vínculo a las reglas de operación o documento equivalente;
+    </label>
+</div>
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1" value="XIV" checked>
+    <label class="form-check-label">
+        p) Informes periódicos sobre la ejecución y los resultados de las evaluaciones realizadas, y
+    </label>
+</div>
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1" value="XIV" checked>
+    <label class="form-check-label">
+        q) Padrón de personas beneficiarias mismo que deberá contener los siguientes datos: 
+        nombre de la persona física o denominación social de las personas morales beneficiarias, el monto, recurso, beneficio o 
+        apoyo otorgado para cada una de ellas, unidad territorial, en su caso, edad y sexo;
+    </label>
+</div>
+
+
+
+
+
+
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3" checked>
+    <label class="form-check-label">XV. Las condiciones generales de trabajo, contratos o convenios que regulen las relaciones 
+        laborales del personal de base o de confianza, así como los recursos públicos económicos, en especie o donativos, 
+        que sean entregados a los sindicatos y ejerzan como recursos públicos;</label>   
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3" checked>
+    <label class="form-check-label">XVI. La información curricular, desde el nivel de jefatura de departamento o equivalente, 
+        hasta la titularidad del sujeto obligado;</label>   
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3" checked|>
+    <label class="form-check-label">XVII. El listado de personas servidoras públicas con sanciones administrativas firmes, 
+        especificando la causa de sanción y la disposición, de conformidad a lo establecido en las disposiciones jurídicas aplicables;</label>   
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3" checked>
+    <label class="form-check-label">XVIII. Los servicios y trámites que ofrecen, incluyendo sus requisitos, 
+        en los sistemas habilitados para ello, de conformidad con las disposiciones jurídicas aplicables;</label>   
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3" checked>
+    <label class="form-check-label">XIX. La información financiera sobre el presupuesto asignado, así como los informes 
+        del ejercicio trimestral del gasto, en términos de la Ley General de Contabilidad Gubernamental y 
+        demás disposiciones jurídicas aplicables;</label>   
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3">
+    <label class="form-check-label">XX. La información relativa a la deuda pública, en términos de las 
+        disposiciones jurídicas aplicables;</label>   
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3" checked>
+    <label class="form-check-label">XXI. Los montos destinados a gastos relativos a comunicación social y publicidad 
+        oficial que permita identificar el tipo de medio, proveedores, número de contrato y concepto o campaña;</label>   
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1" value="fraccion3" checked>
+    <label class="form-check-label">XXII. Los informes de resultados de las auditorías al ejercicio presupuestal de cada sujeto 
+        obligado que se realicen y, en su caso, las aclaraciones que correspondan;</label>   
+</div>
+
+<!-- automatizado-->
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXIII" checked>
+    <label class="form-check-label">
+        XXIII. El resultado de la dictaminación de los estados financieros
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXIV">
+    <label class="form-check-label">
+        XXIV. Los montos, criterios, convocatorias y listado de personas físicas o morales...
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXV" checked>
+    <label class="form-check-label">
+        XXV. Las concesiones, contratos, convenios, permisos, licencias o autorizaciones otorgados...
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXVI" checked>
+    <label class="form-check-label">
+        XXVI. Los resultados de los procedimientos de adjudicación directa, invitación restringida y licitación...
+    </label>
+</div>
+
+<!-- Subincisos del XXVI -->
+<div class="form-check ms-">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXVI_A" checked>
+    <label class="form-check-label">
+        XXVI a) Licitaciones públicas o invitación restringida 
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXVI_A1" checked>
+    <label class="form-check-label">
+        1. Convocatoria o invitación emitida
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXVI_A2" checked>
+    <label class="form-check-label">
+        2. Nombres de participantes o invitados
+    </label>
+</div>
+
+<div class="form-check ms-">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXVI_B" checked>
+    <label class="form-check-label">
+        XXVI b) Adjudicaciones directas
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXVI_B1" checked>
+    <label class="form-check-label">
+        1. Propuesta enviada por el participante
+    </label>
+</div>
+
+<!-- Continúa igual con los demás... -->
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXVII" checked>
+    <label class="form-check-label">
+        XXVII. Los informes que generen de conformidad con las disposiciones jurídicas
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXVIII" checked>
+    <label class="form-check-label">
+        XXVIII. Las estadísticas que generen
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXIX" checked>
+    <label class="form-check-label">
+        XXIX. Informes de avances programáticos o presupuestales
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXX" checked>
+    <label class="form-check-label">
+        XXX. Padrón de proveedores y contratistas
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXXI" checked>
+    <label class="form-check-label">
+        XXXI. Convenios de coordinación con sectores social y privado
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXXII" checked>
+    <label class="form-check-label">
+        XXXII. Inventario de bienes muebles e inmuebles
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXXIII" checked>
+    <label class="form-check-label">
+        XXXIII. Recomendaciones de derechos humanos
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXXIV" checked>
+    <label class="form-check-label">
+        XXXIV. Resoluciones en procesos o procedimientos
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXXV">
+    <label class="form-check-label">
+        XXXV. Mecanismos de participación ciudadana
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXXVI" checked>
+    <label class="form-check-label">
+        XXXVI. Programas que ofrecen
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXXVII" checked>
+    <label class="form-check-label">
+        XXXVII. Actas del Comité de Transparencia
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXXVIII" checked>
+    <label class="form-check-label">
+        XXXVIII. Evaluaciones y encuestas
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XXXIX" checked>
+    <label class="form-check-label">
+        XXXIX. Estudios financiados con recursos públicos
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XL">
+    <label class="form-check-label">
+        XL. Personas jubiladas y pensionadas
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XLI" checked>
+    <label class="form-check-label">
+        XLI. Ingresos recibidos y su destino
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XLII" checked>
+    <label class="form-check-label">
+        XLII. Donaciones hechas a terceros
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XLIII" checked>
+    <label class="form-check-label">
+        XLIII. Catálogo de disposición documental
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XLIV">
+    <label class="form-check-label">
+        XLIV. Actas de sesiones y recomendaciones
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XLV" checked>
+    <label class="form-check-label">
+        XLV. Solicitudes de intervención de comunicaciones
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="articulos[]" value="XLVI" checked>
+    <label class="form-check-label">
+        XLVI. Otra información relevante
+    </label>
+</div>
+    <!-- automatizado -->
+<!-- XXIII -->
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXIII" checked>
+    <label class="form-check-label">
+        XXIII. El resultado de la dictaminación de los estados financieros;
+    </label>
+</div>
+
+<!-- XXIV -->
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXIV" checked>
+    <label class="form-check-label">
+        XXIV. Los montos, criterios, convocatorias y listado de personas físicas o morales a quienes, por cualquier motivo, se les asigne o permita usar recursos públicos o, en los términos de las disposiciones aplicables, realicen actos de autoridad. Asimismo, los informes que dichas personas les entreguen sobre el uso y destino de dichos recursos;
+    </label>
+</div>
+
+<!-- XXV -->
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXV" checked>
+    <label class="form-check-label">
+        XXV. Las concesiones, contratos, convenios, permisos, licencias o autorizaciones otorgados, especificando las personas titulares de aquéllos, debiendo publicarse su objeto, nombre o razón social de la persona titular, vigencia, tipo, términos, condiciones, monto y modificaciones, así como si el procedimiento involucra el aprovechamiento de bienes, servicios y/o recursos públicos;
+    </label>
+</div>
+
+<!-- XXVI -->
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI" checked>
+    <label class="form-check-label">
+        XXVI. Los resultados de los procedimientos de adjudicación directa, invitación restringida y licitación de cualquier naturaleza, incluyendo la versión pública del Expediente respectivo y de los contratos celebrados, que deberá contener, por lo menos, lo siguiente:
+    </label>
+</div>
+
+<!-- a) -->
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_A" checked>
+    <label class="form-check-label">
+        a) De licitaciones públicas o procedimientos de invitación restringida:
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_A1" checked>
+    <label class="form-check-label">
+        1. La convocatoria o invitación emitida, así como los fundamentos legales aplicados para llevarla a cabo;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_A2" checked>
+    <label class="form-check-label">
+        2. Los nombres de las personas participantes o invitadas;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_A3" checked>
+    <label class="form-check-label">
+        3. El nombre de la persona ganadora y las razones que lo justifican;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_A4" checked>
+    <label class="form-check-label">
+        4. El Área solicitante y la responsable de su ejecución;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_A5" checked>
+    <label class="form-check-label">
+        5. Las convocatorias e invitaciones emitidas;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_A6" checked>
+    <label class="form-check-label">
+        6. Los dictámenes y fallo de adjudicación;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_A7" checked>
+    <label class="form-check-label">
+        7. El contrato y, en su caso, sus anexos;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_A8" checked>
+    <label class="form-check-label">
+        8. Los mecanismos de vigilancia y supervisión, incluyendo, en su caso, los estudios de impacto urbano y ambiental, según corresponda;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_A9" checked>
+    <label class="form-check-label">
+        9. La partida presupuestal, de conformidad con el clasificador por objeto del gasto, en el caso de ser aplicable;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_A10" checked>
+    <label class="form-check-label">
+        10. Origen de los recursos especificando si son federales, estatales o municipales, así como el tipo de fondo de participación o aportación respectiva;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_A11" checked>
+    <label class="form-check-label">
+        11. Los convenios modificatorios que, en su caso, sean firmados, precisando el objeto y la fecha de celebración;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_A12" checked>
+    <label class="form-check-label">
+        12. Los informes de avance físico y financiero sobre las obras o servicios contratados;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_A13" checked>
+    <label class="form-check-label">
+        13. El convenio de terminación;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_A14" checked>
+    <label class="form-check-label">
+        14. El finiquito;
+    </label>
+</div>
+
+<!-- b) -->
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_B" checked>
+    <label class="form-check-label">
+        b) De las adjudicaciones directas:
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_B1" checked>
+    <label class="form-check-label">
+        1. La propuesta enviada por el participante;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_B2" checked>
+    <label class="form-check-label">
+        2. Los motivos y fundamentos legales aplicados para llevarla a cabo;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_B3" checked>
+    <label class="form-check-label">
+        3. La autorización del ejercicio de la opción;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_B4" checked>
+    <label class="form-check-label">
+        4. En su caso, las cotizaciones consideradas, especificando los nombres de proveedores y los montos;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_B5" checked>
+    <label class="form-check-label">
+        5. El nombre de la persona física o moral adjudicada;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_B6" checked>
+    <label class="form-check-label">
+        6. La unidad administrativa solicitante y la responsable de su ejecución;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_B7" checked>
+    <label class="form-check-label">
+        7. El número, fecha, el monto del contrato y el plazo de entrega o de ejecución de los servicios u obra;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_B8" checked>
+    <label class="form-check-label">
+        8. Los mecanismos de vigilancia y supervisión, incluyendo, en su caso, los estudios de impacto urbano y ambiental, según corresponda;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_B9" checked>
+    <label class="form-check-label">
+        9. Los informes de avance sobre las obras o servicios contratados;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_B10" checked>
+    <label class="form-check-label">
+        10. El convenio de terminación;
+    </label>
+</div>
+
+<div class="form-check ms-4">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVI_B11" checked>
+    <label class="form-check-label">
+        11. El finiquito;
+    </label>
+</div>
+ 
+
+
+
+
+
+
+
+
+
+
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVII" checked>
+    <label class="form-check-label">
+        XXVII. Los informes que generen de conformidad con las disposiciones jurídicas;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXVIII" checked>
+    <label class="form-check-label">
+        XXVIII. Las estadísticas que generen en cumplimiento de sus facultades, competencias o funciones;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXIX" checked>
+    <label class="form-check-label">
+        XXIX. Los informes de avances programáticos o presupuestales, balances generales y su estado financiero;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXX" checked>
+    <label class="form-check-label">
+        XXX. El Padrón de proveedores y contratistas en los sistemas habilitados para ello, de conformidad con las disposiciones jurídicas aplicables;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXXI" checked>
+    <label class="form-check-label">
+        XXXI. Los convenios de coordinación de concertación con los sectores social y privado;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXXII" checked>
+    <label class="form-check-label">
+        XXXII. El inventario de bienes muebles e inmuebles en posesión y propiedad;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXXIII" checked>
+    <label class="form-check-label">
+        XXXIII. Las recomendaciones emitidas por los órganos públicos del Estado mexicano u organismos internacionales garantes de los derechos humanos, así como las acciones que han llevado a cabo para su atención;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXXIV" checked>
+    <label class="form-check-label">
+        XXXIV. Las resoluciones que se emitan en procesos o procedimientos seguidos en forma de juicio;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXXV" checked>
+    <label class="form-check-label">
+        XXXV. Los mecanismos de participación ciudadana;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXXVI" checked>
+    <label class="form-check-label">
+        XXXVI. Los programas que ofrecen, incluyendo información sobre la población, objetivo y destino, así como los trámites, tiempos de respuesta, requisitos y formatos para acceder a los mismos;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXXVII" checked>
+    <label class="form-check-label">
+        XXXVII. Las actas y resoluciones del Comité de Transparencia de los sujetos obligados;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXXVIII" checked>
+    <label class="form-check-label">
+        XXXVIII. Las evaluaciones y encuestas que hagan los sujetos obligados a programas financiados con recursos públicos;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XXXIX" checked>
+    <label class="form-check-label">
+        XXXIX. Los estudios financiados con recursos públicos;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XL" checked>
+    <label class="form-check-label">
+        XL. El listado de personas jubiladas y pensionadas, así como el monto que reciben;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XLI" checked>
+    <label class="form-check-label">
+        XLI. Los ingresos recibidos por cualquier concepto señalando el nombre de las personas responsables de recibirlos, administrarlos y ejercerlos, así como su destino;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XLII" checked>
+    <label class="form-check-label">
+        XLII. Las donaciones hechas a terceros en dinero o en especie;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XLIII" checked>
+    <label class="form-check-label">
+        XLIII. El catálogo de disposición y guía de archivo documental;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XLIV" checked>
+    <label class="form-check-label">
+        XLIV. Las actas de sesiones ordinarias y extraordinarias, así como las opiniones y recomendaciones que, en su caso, emitan los consejos consultivos;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XLV" checked>
+    <label class="form-check-label">
+        XLV. El listado de solicitudes a las empresas concesionarias de telecomunicaciones y proveedores de servicios o aplicaciones de Internet para la intervención de comunicaciones privadas, el acceso al registro de comunicaciones y la localización geográfica en tiempo real de equipos de comunicación, que contenga exclusivamente el objeto, el alcance temporal y los fundamentos legales del requerimiento, así como, en su caso, la mención de que cuenta con la autorización judicial correspondiente;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XLVI" checked>
+    <label class="form-check-label">
+        XLVI. Cualquier otra información que sea de utilidad o se considere relevante, y la que se encuentre prevista en otras disposiciones jurídicas aplicables.
+    </label>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <h2>Artículo 69. Los sujetos obligados de los Poderes Judiciales Federal y de las entidades federativas, 
+        además de lo señalado en el artículo 65 de la presente Ley, deberán poner a disposición del público y actualizar 
+        la información siguiente:</h2>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="I" checked>
+    <label class="form-check-label">
+        I. Las tesis y ejecutorias publicadas en el Semanario Judicial de la Federación o en la Gaceta respectiva de cada tribunal administrativo, incluyendo, tesis jurisprudenciales y aisladas;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="II" checked>
+    <label class="form-check-label">
+        II. Las versiones públicas de todas las sentencias y laudos emitidas;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="III" checked>
+    <label class="form-check-label">
+        III. Las versiones estenográficas, los audios y las videograbaciones de las sesiones públicas, según corresponda;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="IV" checked>
+    <label class="form-check-label">
+        IV. La relacionada con los procesos por medio de los cuales fueron designados los jueces y magistrados;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="V" checked>
+    <label class="form-check-label">
+        V. La lista de acuerdos que diariamente se publiquen;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="VI" checked>
+    <label class="form-check-label">
+        VI. Sobre los procedimientos de designación de jueces y magistrados: la convocatoria, el registro de aspirantes, la lista de aspirantes aceptados, la lista de los aspirantes que avanzan cada una de las etapas, el resultado de las evaluaciones de cada etapa protegiendo, en su caso, los datos personales de los aspirantes y la lista de vencedores;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="VII" checked>
+    <label class="form-check-label">
+        VII. Sobre los procedimientos de ratificación: la resolución definitiva donde se plasmen las razones de esa determinación;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="VIII" checked>
+    <label class="form-check-label">
+        VIII. Las resoluciones que impongan sanciones disciplinarias a los integrantes del Poder Judicial de la Federación, de conformidad a lo establecido en las disposiciones jurídicas aplicables;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="IX" checked>
+    <label class="form-check-label">
+        IX. Los indicadores relacionados con el desempeño jurisdiccional que, conforme a sus funciones, deban establecer, publicitando por lo menos los números de ingresos de asuntos nuevos por mes y por año, números de resoluciones emitidas por mes y por año, sentido general del fallo de acuerdo con la materia, tiempo promedio de resolución de asuntos, número de impugnaciones recibidas por mes y por año, número de impugnaciones declaradas procedentes por mes y por año;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="X" checked>
+    <label class="form-check-label">
+        X. Las disposiciones de observancia general emitidas por los Plenos o sus presidentes, para el adecuado ejercicio de sus atribuciones;
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XI" checked>
+    <label class="form-check-label">
+        XI. Los votos concurrentes, minoritarios, aclaratorios, particulares o de cualquier otro tipo, que emitan los integrantes de los Plenos, y
+    </label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" name="pj1[]" value="XII" checked>
+    <label class="form-check-label">
+        XII. Las resoluciones recaídas a los asuntos de contradicciones de criterios.
+    </label>
+</div>
+
+
+
+
+        <!-- <input type="radio" name="pj2"> Sí
+        <input type="radio" name="pj2"> No -->
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- ================= AUTORIDAD GARANTE ================= -->
+    <div id="garante" class="seccion">
+        <h5>Autoridad Garante</h5>
+
+        <p>Artículo 10: ¿Protege los datos personales?</p>
+        <input type="radio" name="ag1"> Sí
+        <input type="radio" name="ag1"> No
+
+        <p>Artículo 11: ¿Garantiza transparencia?</p>
+        <input type="radio" name="ag2"> Sí
+        <input type="radio" name="ag2"> No
+    </div>
+
+    <!-- ================= LABORAL ================= -->
+    <div id="laboral" class="seccion">
+        <h5>Laboral</h5>
+
+        <p>Artículo 20: ¿Se respetan los derechos laborales?</p>
+        <input type="radio" name="lb1"> Sí
+        <input type="radio" name="lb1"> No
+    </div>
+
+    <button class="btn btn-success mt-4" onclick="finalizarEncuesta()">
+        Enviar respuestas
+    </button>
+</div>
+    <div id="resultado" class="mt-3 fw-bold"></div>
+
+<script>
+
+// Paso 1 → Registro a términos
+function mostrarTerminos() {
+    document.getElementById("registro").classList.add("hidden");
+    document.getElementById("terminos").classList.remove("hidden");
+}
+
+// Paso 2 → Validar selección e iniciar encuesta
+function iniciarEncuesta() {
+    let opcion = document.getElementById("selector").value;
+
+    if (opcion === "") {
+        alert("Debes seleccionar una categoría");
+        return;
+    }
+
+    document.getElementById("terminos").classList.add("hidden");
+    document.getElementById("encuesta").classList.remove("hidden");
+
+    mostrarSeccion(opcion);
+}
+
+// Paso 3 → Mostrar solo la encuesta seleccionada
+function mostrarSeccion(opcion) {
+
+    let secciones = ["judicial", "garante", "laboral"];
+
+    secciones.forEach(sec => {
+        document.getElementById(sec).style.display = "none";
+    });
+
+    document.getElementById(opcion).style.display = "block";
+
+    // Cambiar título dinámico
+    let titulo = {
+        judicial: "Encuesta - Poder Judicial",
+        garante: "Encuesta - Autoridad Garante",
+        laboral: "Encuesta - Materia Laboral"
+    };
+
+    document.getElementById("tituloEncuesta").innerText = titulo[opcion];
+}
+
+// Paso 4 → Finalizar encuesta
+function finalizarEncuesta() {
+    document.getElementById("resultado").innerHTML = "✅ Encuesta enviada correctamente";
+    document.getElementById("resultado").style.color = "green";
+}
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
